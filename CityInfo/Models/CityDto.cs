@@ -14,5 +14,7 @@ namespace CityInfo.Models
         public string Description { get; set; }
 
         public int NumberOfPointsOfInterest { get; set; }
+
+        public List<Models.PointOfInterestDto> PointsOfInterest { get; set; }
     }
 }
