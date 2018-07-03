@@ -51,6 +51,17 @@ namespace CityInfo.Controllers
                 return BadRequest();
             }
 
+            bool nameDescriptionEqual = pointOfInterest.Name == pointOfInterest.Description;
+            if (nameDescriptionEqual)
+            {
+                ModelState.AddModelError("Description", "Description cannot be the same as name.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
 
             if (city == null)
