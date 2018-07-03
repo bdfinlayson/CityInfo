@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace CityInfo
 {
@@ -17,6 +18,17 @@ namespace CityInfo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+                // adds serialization to serialize keynames as they are defined in the model
+                //.AddJsonOptions(option => 
+                //{
+                //    if (option.SerializerSettings.ContractResolver != null)
+                //    {
+                //        var castedResolver = option.SerializerSettings.ContractResolver
+                //            as DefaultContractResolver;
+                //        castedResolver.NamingStrategy = null;
+                //    }
+
+                //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
