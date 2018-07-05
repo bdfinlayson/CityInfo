@@ -23,13 +23,24 @@ namespace CityInfo.Controllers
         [HttpGet("{cityId}/pointsofinterest")]
         public IActionResult GetPointsOfInterest(int cityId)
         {
-            var result = CitiesDataStore.Current.Cities.FirstOrDefault(city => city.Id == cityId);
-            if (result == null)
+            try
             {
-                _logger.LogInformation($"The city with the id of {cityId} was not found");
-                return NotFound();
+                throw new Exception("test 123");
+
+                var result = CitiesDataStore.Current.Cities.FirstOrDefault(city => city.Id == cityId);
+                if (result == null)
+                {
+                    _logger.LogInformation($"The city with the id of {cityId} was not found");
+                    return NotFound();
+                }
+                return Ok(result.PointsOfInterest);
             }
-            return Ok(result.PointsOfInterest);
+            catch(Exception exception)
+            {
+                _logger.LogCritical($"There was an error requesting city with id {cityId}", exception);
+                return StatusCode(500, "There was an error with your request");
+            }
+
         }
 
         [HttpGet("{cityId}/pointsofinterest/{id}", Name = "GetPointOfInterest")]
