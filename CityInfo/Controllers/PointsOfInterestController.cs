@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CityInfo.Controllers
 {
@@ -12,12 +13,20 @@ namespace CityInfo.Controllers
     [Route("api/cities")]
     public class PointsOfInterestController : Controller
     {
+        private ILogger<PointsOfInterestController> _logger;
+
+        public PointsOfInterestController(ILogger<PointsOfInterestController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet("{cityId}/pointsofinterest")]
         public IActionResult GetPointsOfInterest(int cityId)
         {
             var result = CitiesDataStore.Current.Cities.FirstOrDefault(city => city.Id == cityId);
             if (result == null)
             {
+                _logger.LogInformation($"The city with the id of {cityId} was not found");
                 return NotFound();
             }
             return Ok(result.PointsOfInterest);
