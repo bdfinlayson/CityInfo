@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CityInfo.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,10 @@ namespace CityInfo.Controllers
     public class PointsOfInterestController : Controller
     {
         private ILogger<PointsOfInterestController> _logger;
-        private Services.MailService _mailService;
+        private IMailService _mailService;
 
         public PointsOfInterestController(ILogger<PointsOfInterestController> logger,
-            Services.MailService mailService)
+            IMailService mailService)
         {
             _logger = logger;
             _mailService = mailService;

@@ -8,8 +8,8 @@ namespace CityInfo.Services
 {
     public class MailService : IMailService
     {
-        private string _mailTo = "admin@admin.com";
-        private string _mailFrom = "anything@anything.com";
+        private string _mailTo = Startup.Configuration["mailSettings:mailToAddress"];
+        private string _mailFrom = Startup.Configuration["mailSettings:mailFromAddress"];
 
         public void Send(string subject, string message)
         {
