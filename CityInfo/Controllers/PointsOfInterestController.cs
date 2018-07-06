@@ -14,10 +14,13 @@ namespace CityInfo.Controllers
     public class PointsOfInterestController : Controller
     {
         private ILogger<PointsOfInterestController> _logger;
+        private Services.MailService _mailService;
 
-        public PointsOfInterestController(ILogger<PointsOfInterestController> logger)
+        public PointsOfInterestController(ILogger<PointsOfInterestController> logger,
+            Services.MailService mailService)
         {
             _logger = logger;
+            _mailService = mailService;
         }
 
         [HttpGet("{cityId}/pointsofinterest")]
@@ -25,8 +28,6 @@ namespace CityInfo.Controllers
         {
             try
             {
-                throw new Exception("test 123");
-
                 var result = CitiesDataStore.Current.Cities.FirstOrDefault(city => city.Id == cityId);
                 if (result == null)
                 {
@@ -218,6 +219,9 @@ namespace CityInfo.Controllers
             }
 
             city.PointsOfInterest.Remove(pointOfInterest);
+
+            _mailService.Send("Point of interest deleted", $"Point of interest with id {id} was deleted.");
+
             return NoContent();
         }
     }
