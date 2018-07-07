@@ -20,7 +20,8 @@ namespace CityInfo.Entities
         [MaxLength(200)]
         public string Description { get; set; }
 
-        [ForeignKey("CityId")] // annotation not necessary because convention based approach below is suffient 
+        //[ForeignKey("CityId")] // annotation not necessary because convention based approach below is suffient 
         public City City { get; set; } // this is called a navigation property
+        public int CityId { get; set; }
     }
 }

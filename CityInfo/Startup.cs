@@ -44,7 +44,8 @@ namespace CityInfo
 
             //});
 
-            var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=CityInfo;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //var connectionString = Startup.Configuration["connectionStrings:cityInfoDBConnectionString"];
+            var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CityInfo;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             services.AddTransient<Services.IMailService, Services.MailService>();
             services.AddDbContext<CityInfoContext>(o => o.UseSqlServer(connectionString)); // registering the db context with a scoped lifetime
         }
