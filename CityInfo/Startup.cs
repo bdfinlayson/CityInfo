@@ -13,6 +13,7 @@ using NLog.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using CityInfo.Entities;
 using Microsoft.EntityFrameworkCore;
+using CityInfo.Services;
 
 namespace CityInfo
 {
@@ -69,6 +70,13 @@ namespace CityInfo
             {
                 app.UseExceptionHandler();
             }
+
+            AutoMapper.Mapper.Initialize(configure =>
+            {
+                configure.CreateMap<Entities.City, Models.CityWithoutPointsOfInterestDto>();
+                configure.CreateMap<Entities.City, Models.CityDto>();
+                configure.CreateMap<Entities.PointOfInterest, Models.PointOfInterestDto>();
+            });
 
             app.UseMvc();
 

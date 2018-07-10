@@ -16,12 +16,15 @@ namespace CityInfo.Controllers
     {
         private ILogger<PointsOfInterestController> _logger;
         private IMailService _mailService;
+        private ICityInfoRepository _repository;
 
         public PointsOfInterestController(ILogger<PointsOfInterestController> logger,
-            IMailService mailService)
+            IMailService mailService,
+            ICityInfoRepository repository)
         {
             _logger = logger;
             _mailService = mailService;
+            _repository = repository;
         }
 
         [HttpGet("{cityId}/pointsofinterest")]
@@ -46,7 +49,7 @@ namespace CityInfo.Controllers
         }
 
         [HttpGet("{cityId}/pointsofinterest/{id}", Name = "GetPointOfInterest")]
-        public IActionResult GetPontOfInterest(int cityId, int id)
+        public IActionResult GetPointOfInterest(int cityId, int id)
         {
             var result = CitiesDataStore.Current.Cities.FirstOrDefault(city => city.Id == id);
 
@@ -96,17 +99,20 @@ namespace CityInfo.Controllers
             var maxPointOfInterestId = CitiesDataStore.Current.Cities.SelectMany(
                              c => c.PointsOfInterest).Max(p => p.Id);
 
-            var finalPointOfInterest = new Models.PointOfInterestDto()
+            var finalPointOfInterest = AutoMapper.Mapper.Map<Entities.PointOfInterest>(pointOfInterest);
+
+            //city.PointsOfInterest.Add(finalPointOfInterest);
+            _repository.AddPointOfInterestForCity(cityId, finalPointOfInterest);
+
+            if (!_repository.Save())
             {
-                Id = ++maxPointOfInterestId,
-                Name = pointOfInterest.Name,
-                Description = pointOfInterest.Description
-            };
-
-            city.PointsOfInterest.Add(finalPointOfInterest);
-
-            return CreatedAtRoute("GetPointOfInterest", new
-            { cityId = cityId, id = finalPointOfInterest.Id }, finalPointOfInterest);
+                return StatusCode(500, "Unable to save point of interest to city");
+            }
+            else
+            {
+                return CreatedAtRoute("GetPointOfInterest", new
+                { cityId = cityId, id = finalPointOfInterest.Id }, finalPointOfInterest);
+            }
         }
 
         [HttpPut("{cityId}/pointofinterest/{id}")]

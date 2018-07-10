@@ -6,7 +6,7 @@ using CityInfo.Entities;
 
 namespace CityInfo.Services
 {
-    interface ICityInfoRepository
+    public interface ICityInfoRepository
     {
         IEnumerable<City> GetCities();
 
@@ -15,5 +15,11 @@ namespace CityInfo.Services
         IEnumerable<PointOfInterest> GetPointsOfInterestForCity(int id);
 
         PointOfInterest GetPointOfInterest(int cityId, int id);
+
+        bool CityExists(int id);
+
+        void AddPointOfInterestForCity(int cityId, PointOfInterest pointOfInterest);
+
+        bool Save();
     }
 }

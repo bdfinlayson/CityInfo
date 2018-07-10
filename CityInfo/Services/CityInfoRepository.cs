@@ -17,6 +17,22 @@ namespace CityInfo.Services
             _context = context;
         }
 
+        public bool CityExists(int id)
+        {
+            return GetCity(id, false) != null;
+        }
+
+        public void AddPointOfInterestForCity(int cityId, PointOfInterest pointOfInterest)
+        {
+            var city = GetCity(cityId, false);
+            city.PointsOfInterest.Add(pointOfInterest);
+        }
+
+        public bool Save()
+        {
+            return (_context.SaveChanges() >= 0);
+        }
+
         public City GetCity(int id, bool includePointsOfInterest)
         {
             if (includePointsOfInterest)
